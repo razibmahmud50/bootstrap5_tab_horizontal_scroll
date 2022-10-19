@@ -4,46 +4,35 @@
    <meta charset="utf-8">
    <meta http-equiv="x-ua-compatible" content="ie=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-   <title>Quick Start Pack Template</title>
-   <meta name="keywords" content="clean,creative"/>
-   <meta name="description" content="Bootstrap5">
-   <meta name="author" content=""/>
-   <!-- fonts css -->
-   <link href="https://fonts.googleapis.com/css?family=Dosis:500,700|Roboto:300,400" rel="stylesheet">
-   <!-- plugins css -->
-   <link rel="stylesheet" href="styles/bootstrap.min.css">
-   <!-- main css -->
-   <link rel="stylesheet" href="styles/global.css">
-   <link rel="stylesheet" href="styles/style.css">
+   <title>Bootstrap 5 tab horizontal scroll for many item</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
    <style>
-      .disabled{
-         pointer-events: none;
-         opacity: 0.5;
-      }
       .tab-scroller{
          position: relative;
          max-width: 100%;
          overflow: hidden;
       }
+      .tab-scroller-arrow{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 25px;
+        cursor: pointer;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff;
+        border: 1px solid #222222;
+      }
       .tab-scroller .right-arrow{
-         position: absolute;
          right: 0;
-         top: 0;
-         bottom: 0;
-         width: 30px;
-         background-color: red;
-         cursor: pointer;
-         z-index: 1;
       }
       .tab-scroller .left-arrow{
-         position: absolute;
          left: 0;
-         top: 0;
-         bottom: 0;
-         width: 30px;
-         background-color: red;
-         cursor: pointer;
-         z-index: 1;
+      }
+      .tab-scroller .left-arrow.d-none~.nav{
+         padding-left: 0;
       }
       .tab-scroller .nav{
          position: relative;
@@ -54,17 +43,17 @@
 </head>
 
 <div class="tab-scroller">
-   <i class="left-arrow d-none">
+   <i class="tab-scroller-arrow left-arrow d-none">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
     </svg>
    </i>
-   <i class="right-arrow d-none">
+   <i class="tab-scroller-arrow right-arrow d-none">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
          <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
        </svg>
    </i>
-   <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+   <ul class="nav nav-pills" id="pills-tab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home</button>
       </li>
@@ -156,56 +145,62 @@
  </div>
 
 
-   <script src="scripts/bootstrap.bundle.min.js"></script>
+   <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
    <!-- Custom js -->
    <script>
-      let scrollTab = document.querySelector(".tab-scroller")
-      let scrollTabInner = document.querySelector(".tab-scroller .nav")
-      let scrollTabItem = document.querySelectorAll(".tab-scroller .nav-item")
-      let leftArrow = document.querySelector(".tab-scroller .left-arrow")
-      let rightArrow = document.querySelector(".tab-scroller .right-arrow")
+       //  selector
+        let scrollTab = document.querySelector(".tab-scroller")
+        let scrollTabInner = document.querySelector(".tab-scroller .nav")
+        let scrollTabItem = document.querySelectorAll(".tab-scroller .nav-item")
+        let leftArrow = document.querySelector(".tab-scroller .left-arrow")
+        let rightArrow = document.querySelector(".tab-scroller .right-arrow")
+        //scrollable tab width
+        let scrollTabWidth = scrollTab.offsetWidth
 
-      let scrollTabWidth = scrollTab.offsetWidth
-      let scrollTabItemsWidth = ()=>{
-         var itemsWidth = 0;
-         scrollTabItem.forEach(item => {
-          var itemWidth = item.offsetWidth;
-          itemsWidth += itemWidth;
-         });
-         return itemsWidth
-      }  
-      let tabItemsOffsetLeft = scrollTabInner.offsetLeft
-      let widthOfHiddenItems = scrollTabItemsWidth() - scrollTabWidth;
+        //all tab items width
+        let scrollTabItemsWidth = () => {
+          let itemsWidth = 0;
+          scrollTabItem.forEach(item => {
+            let itemWidth = item.offsetWidth;
+            itemsWidth += itemWidth;
+          });
+          return itemsWidth
+        }
 
-      let rightValue = 0;
-      if(scrollTabItemsWidth()>scrollTabWidth){
-         rightArrow.classList.remove("d-none")
-         leftArrow.classList.remove("d-none")
-      }
-      rightArrow.addEventListener("click", ()=>{
-         
-         if(rightValue>widthOfHiddenItems){
-            rightArrow.classList.add("disabled")
-            leftArrow.classList.remove("disabled")
+        //hidden tab item width
+        let widthOfHiddenItems = scrollTabItemsWidth() - scrollTabWidth;
+
+        let rightValue = 0;
+        if (scrollTabItemsWidth() > scrollTabWidth) {
+          rightArrow.classList.remove("d-none")
+        }
+
+        //right arrow click functionality
+        rightArrow.addEventListener("click", () => {
+          if (rightValue > widthOfHiddenItems) {
+            rightArrow.classList.add("d-none")
+            leftArrow.classList.remove("d-none")
             scrollTabInner.style.cssText = `right: ${widthOfHiddenItems + 35}px;`
-         }else{
-            rightArrow.classList.remove("disabled")
-            leftArrow.classList.add("disabled")
+          } else {
+            rightArrow.classList.remove("d-none")
+            leftArrow.classList.remove("d-none")
             rightValue += 200;
             scrollTabInner.style.cssText = `right: ${rightValue}px;`
-         }
-         console.log(rightValue)
-      })
-      leftArrow.addEventListener("click", ()=>{
-         rightValue -= 200;
-            scrollTabInner.style.cssText = `right: ${rightValue}px;`
-         if(rightValue<= 0){
-            leftArrow.classList.add("disabled")
-            rightArrow.classList.remove("disabled")
+          }
+        })
+
+        //left arrow click functionality
+        leftArrow.addEventListener("click", () => {
+          rightValue -= 200;
+          scrollTabInner.style.cssText = `right: ${rightValue}px;`
+          rightArrow.classList.remove("d-none")
+          if (rightValue <= 0) {
+            leftArrow.classList.add("d-none")
+            rightArrow.classList.remove("d-none")
             scrollTabInner.style.cssText = `right: 0px;`
-         }
-      })
-      console.log (`scrollTab Width ${scrollTabWidth} scrollTabItemsWidth ${scrollTabItemsWidth()} width of hidden items ${widthOfHiddenItems}`)
+          }
+        })
 
    </script>
 </body>
